@@ -8,3 +8,4 @@ function fn(ary) {
 var res = fn(ary);
 console.log(ary);
 console.log(res);
+
