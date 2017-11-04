@@ -92,8 +92,10 @@ html, body {
 }
 
 .list li a p {
+    height: 40px;
     line-height: 20px;
     color: #999;
+    overflow: hidden;
 }
 
 .list li a span {
