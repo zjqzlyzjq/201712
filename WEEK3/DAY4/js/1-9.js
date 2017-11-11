@@ -1,8 +1,9 @@
-function css() {
-
-}
-css(box,'padding')//=>获取样式
-css(box,'padding','20')//=>设置样式
-css(box,{
-    padding:30
-})//=>批量设置样式
+utils.css(box, {
+    width: 300,
+    height: 200,
+    padding: 30,
+    opacity: 1,
+    background: 'orange'
+});
+utils.css(box, 'border', '5px dashed red');
+console.log(utils.css(box, 'margin'));
