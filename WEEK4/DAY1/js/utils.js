@@ -1,10 +1,13 @@
 var utils = (function () {
+    var isCompatible = 'getElementsByClassName' in document,
+        isSupportJSON = 'JSON' in window;
+
     //=>toArray & toJSON
     var toArray = function (classAry) {
         var ary = [];
-        try {
+        if (isCompatible) {
             ary = Array.prototype.slice.call(classAry);
-        } catch (e) {
+        } else {
             for (var i = 0; i < classAry.length; i++) {
                 ary[ary.length] = classAry[i];
             }
@@ -13,7 +16,7 @@ var utils = (function () {
     };
 
     var toJSON = function (str) {
-        return 'JSON' in window ? JSON.parse(str) : eval('(' + str + ')');
+        return isSupportJSON ? JSON.parse(str) : eval('(' + str + ')');
     };
 
     //=>offset & winBox
@@ -22,7 +25,7 @@ var utils = (function () {
             t = curEle.offsetTop,
             p = curEle.offsetParent;
         while (p.tagName !== 'BODY') {
-            if (!/MISE 8/.test(navigator.userAgent)) {
+            if (isCompatible === false && isSupportJSON === true) {
                 l += p.clientLeft;
                 t += p.clientTop;
             }
@@ -45,7 +48,7 @@ var utils = (function () {
     //=>children
     function children(ele, attr) {
         var ary = [];
-        'getComputedStyle' in window ? ary = toArray(ele.children) : ary = toArray(ele.childNodes);
+        isCompatible ? ary = toArray(ele.children) : ary = toArray(ele.childNodes);
         for (var k = 0; k < ary.length; k++) {
             var obj = ary[k];
             if (obj.nodeType === 1) {
@@ -61,11 +64,11 @@ var utils = (function () {
         return ary;
     }
 
-    //=>getElementsByClassName兼容处理
+    //=>getElementsByClassName
     function getElementsByClassName(classStr, context) {
         if (arguments.length === 0) return [];
         context = context || document;
-        if (document.getElementsByClassName) {
+        if (isCompatible) {
             return toArray(context.getElementsByClassName(classStr));
         }
         var eleList = toArray(context.getElementsByTagName("*"));
@@ -86,7 +89,7 @@ var utils = (function () {
     //=>css
     function getCss(curEle, attr) {
         var value = null, reg = null;
-        if ('getComputedStyle' in window) {
+        if (isCompatible) {
             value = window.getComputedStyle(curEle, null)[attr];
         } else {
             if (attr === 'opacity') {
@@ -100,7 +103,7 @@ var utils = (function () {
         return reg.test(value) ? parseFloat(value) : value;
     }
 
-    function set(curEle, attr, value) {
+    function setCss(curEle, attr, value) {
         if (attr === 'opacity') {
             curEle.style.opacity = value;
 
@@ -136,6 +139,8 @@ var utils = (function () {
         toJSON: toJSON,
         offset: offset,
         winBox: winBox,
-        children: children
+        children: children,
+        getElementsByClassName: getElementsByClassName,
+        css: css
     }
 })();
