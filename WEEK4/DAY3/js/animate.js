@@ -67,8 +67,9 @@
      *  curEle：当前要运动的元素
      *  target：当前元素运动的目标位置 {xxx:xxx...}
      *  duration：当前运动的总时间(默认值1000MS)
+     *  callBack：回调函数(动画完成后我们处理什么事情)
      */
-    function animate(curEle, target, duration) {
+    function animate(curEle, target, duration, callBack) {
         var time = 0,
             begin = {},
             change = {};
@@ -86,6 +87,10 @@
             if (time >= duration) {
                 utils.css(curEle, target);
                 clearInterval(curEle.animateTimer);
+                //=>动画完成后执行回调函数(验证是否为函数,是函数才执行)
+                // typeof callBack === 'function' ? callBack() : null;
+                callBack && callBack();
+                // callBack && callBack.call(curEle);
                 return;
             }
 
