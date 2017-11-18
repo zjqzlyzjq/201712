@@ -366,6 +366,28 @@ document.getElementById('login').onclick = function () {
 > 下面分享一个珠峰培训自主封装的TWEEN算法运动公式，可以实现很多非匀速运动的效果
 > http://old.zhufengpeixun.cn/tween/
 
+`回调函数`
+> 把一个函数作为值传递给另外一个函数，在另外一个函数中把当前函数执行
+```javascript
+function fn(callBack){
+	//=>callBack:function(){}
+	callBack();
+}
+fn(function(){});
+
+//=>之前学过的知识中有很多的回调函数
+ary.sort(function(a,b){
+	return a-b;
+});//=>把匿名的回调函数作为值传递给SORT,在执行SORT的时候把传递的匿名函数执行
+ary.forEach(function(){});
+ary.map(function(){});
+str.replace(reg,function(){});
+window.setInterval(function(){},1000);
+//=>很多的回掉函数机制,而且回调函数机制非常重要
+```
+> 凡是在当前方法执行的某个阶段，需要做一些额外的事情（而且这个事情是不固定的，具体做什么不知道），此时我们就可以利用回调函数机制，把要做的事情当做值传递给当前的函数，在当前函数的某个阶段把传递的函数执行即可
+
+
 **`封装一个固定时间内支持多方向非匀速运动的动画库`**
 ```javascript
 ~function () {
@@ -644,11 +666,15 @@ document.getElementById('login').onclick = function () {
         }
 
         //=>running
+        clearInterval(curEle.animateTimer);
         curEle.animateTimer = setInterval(function () {
             time += 17;
             if (time >= duration) {
                 utils.css(curEle, target);
-                clearInterval(curEle.animateTimer);
+			clearInterval(curEle.animateTimer);
+                //=>run callBack
+                //typeof callBack === 'function' ? callBack.call(curEle) : null;
+                callBack && callBack.call(curEle);
                 return;
             }
             var curPos = {};

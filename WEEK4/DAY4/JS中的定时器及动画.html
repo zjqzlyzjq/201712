@@ -418,9 +418,36 @@
   <a href="http://old.zhufengpeixun.cn/tween/" target="_blank">http://old.zhufengpeixun.cn/tween/</a></p>
 </blockquote>
 
+<p><code>回调函数</code></p>
+
+<blockquote>
+  <p>把一个函数作为值传递给另外一个函数，在另外一个函数中把当前函数执行</p>
+</blockquote>
+
+
+
+<pre class="prettyprint with-line-number hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-comment line-number">1.</span><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">fn</span>(<span class="hljs-params">callBack</span>)</span>{
+</div><div class="hljs-line"><span class="hljs-comment line-number">2.</span>    <span class="hljs-comment">//=&gt;callBack:function(){}</span>
+</div><div class="hljs-line"><span class="hljs-comment line-number">3.</span>    callBack();
+</div><div class="hljs-line"><span class="hljs-comment line-number">4.</span>}
+</div><div class="hljs-line"><span class="hljs-comment line-number">5.</span>fn(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{});
+</div><div class="hljs-line"><span class="hljs-comment line-number">6.</span>
+</div><div class="hljs-line"><span class="hljs-comment line-number">7.</span><span class="hljs-comment">//=&gt;之前学过的知识中有很多的回调函数</span>
+</div><div class="hljs-line"><span class="hljs-comment line-number">8.</span>ary.sort(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">a,b</span>)</span>{
+</div><div class="hljs-line"><span class="hljs-comment line-number">9.</span>    <span class="hljs-keyword">return</span> a-b;
+</div><div class="hljs-line"><span class="hljs-comment line-number">10.</span>});<span class="hljs-comment">//=&gt;把匿名的回调函数作为值传递给SORT,在执行SORT的时候把传递的匿名函数执行</span>
+</div><div class="hljs-line"><span class="hljs-comment line-number">11.</span>ary.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{});
+</div><div class="hljs-line"><span class="hljs-comment line-number">12.</span>ary.map(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{});
+</div><div class="hljs-line"><span class="hljs-comment line-number">13.</span>str.replace(reg,<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{});
+</div><div class="hljs-line"><span class="hljs-comment line-number">14.</span><span class="hljs-built_in">window</span>.setInterval(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{},<span class="hljs-number">1000</span>);
+</div><div class="hljs-line"><span class="hljs-comment line-number">15.</span><span class="hljs-comment">//=&gt;很多的回掉函数机制,而且回调函数机制非常重要</span>
+</div></code></pre>
+
+<blockquote>
+  <p>凡是在当前方法执行的某个阶段，需要做一些额外的事情（而且这个事情是不固定的，具体做什么不知道），此时我们就可以利用回调函数机制，把要做的事情当做值传递给当前的函数，在当前函数的某个阶段把传递的函数执行即可</p>
+</blockquote>
+
 <p><strong><code>封装一个固定时间内支持多方向非匀速运动的动画库</code></strong></p>
-
-
 
 <pre class="prettyprint with-line-number hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-comment line-number">1.</span>~<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 </div><div class="hljs-line"><span class="hljs-comment line-number">2.</span>    <span class="hljs-comment">/*
@@ -698,28 +725,32 @@
 </div><div class="hljs-line"><span class="hljs-comment line-number">274.</span>        }
 </div><div class="hljs-line"><span class="hljs-comment line-number">275.</span>
 </div><div class="hljs-line"><span class="hljs-comment line-number">276.</span>        <span class="hljs-comment">//=&gt;running</span>
-</div><div class="hljs-line"><span class="hljs-comment line-number">277.</span>        curEle.animateTimer = setInterval(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
-</div><div class="hljs-line"><span class="hljs-comment line-number">278.</span>            time += <span class="hljs-number">17</span>;
-</div><div class="hljs-line"><span class="hljs-comment line-number">279.</span>            <span class="hljs-keyword">if</span> (time &gt;= duration) {
-</div><div class="hljs-line"><span class="hljs-comment line-number">280.</span>                utils.css(curEle, target);
-</div><div class="hljs-line"><span class="hljs-comment line-number">281.</span>                clearInterval(curEle.animateTimer);
-</div><div class="hljs-line"><span class="hljs-comment line-number">282.</span>                <span class="hljs-keyword">return</span>;
-</div><div class="hljs-line"><span class="hljs-comment line-number">283.</span>            }
-</div><div class="hljs-line"><span class="hljs-comment line-number">284.</span>            <span class="hljs-keyword">var</span> curPos = {};
-</div><div class="hljs-line"><span class="hljs-comment line-number">285.</span>            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> key <span class="hljs-keyword">in</span> target) {
-</div><div class="hljs-line"><span class="hljs-comment line-number">286.</span>                <span class="hljs-keyword">if</span> (target.hasOwnProperty(key)) {
-</div><div class="hljs-line"><span class="hljs-comment line-number">287.</span>                    curPos[key] = effect(time, begin[key], change[key], duration);
-</div><div class="hljs-line"><span class="hljs-comment line-number">288.</span>                }
-</div><div class="hljs-line"><span class="hljs-comment line-number">289.</span>            }
-</div><div class="hljs-line"><span class="hljs-comment line-number">290.</span>            utils.css(curEle, curPos);
-</div><div class="hljs-line"><span class="hljs-comment line-number">291.</span>        }, <span class="hljs-number">17</span>);
-</div><div class="hljs-line"><span class="hljs-comment line-number">292.</span>    }
-</div><div class="hljs-line"><span class="hljs-comment line-number">293.</span>
-</div><div class="hljs-line"><span class="hljs-comment line-number">294.</span>    <span class="hljs-comment">/*
-</span></div><div class="hljs-line"><span class="hljs-comment line-number">295.</span>     * 参数使用OPTIONS对象处理的好处:
-</div><div class="hljs-line"><span class="hljs-comment line-number">296.</span>     *  1、不用考虑顺序的问题了，只要传递的时候在对象中指定好内容即可，也就是哪一个属性传递哪一个值即可
-</div><div class="hljs-line"><span class="hljs-comment line-number">297.</span>     *  2、对于不传递的我们完全可以在函数中给做一些默认值，把传递的值覆盖默认的，没传递的使用默认值即可
-</div><div class="hljs-line"><span class="hljs-comment line-number">298.</span>     *  =&gt;当我们封装的方法需要支持传递很多参数，并且有些可以传递也可以不传递（不传递的都给默认值），再并且后期可能还会扩展更多的参数传递，这些情况下，兄弟就不要多想了，直接上OPTIONS
-</div><div class="hljs-line"><span class="hljs-comment line-number">299.</span>     */
-</div><div class="hljs-line"><span class="hljs-comment line-number">300.</span>}();
+</div><div class="hljs-line"><span class="hljs-comment line-number">277.</span>        clearInterval(curEle.animateTimer);
+</div><div class="hljs-line"><span class="hljs-comment line-number">278.</span>        curEle.animateTimer = setInterval(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+</div><div class="hljs-line"><span class="hljs-comment line-number">279.</span>            time += <span class="hljs-number">17</span>;
+</div><div class="hljs-line"><span class="hljs-comment line-number">280.</span>            <span class="hljs-keyword">if</span> (time &gt;= duration) {
+</div><div class="hljs-line"><span class="hljs-comment line-number">281.</span>                utils.css(curEle, target);
+</div><div class="hljs-line"><span class="hljs-comment line-number">282.</span>            clearInterval(curEle.animateTimer);
+</div><div class="hljs-line"><span class="hljs-comment line-number">283.</span>                <span class="hljs-comment">//=&gt;run callBack</span>
+</div><div class="hljs-line"><span class="hljs-comment line-number">284.</span>                <span class="hljs-comment">//typeof callBack === 'function' ? callBack.call(curEle) : null;</span>
+</div><div class="hljs-line"><span class="hljs-comment line-number">285.</span>                callBack &amp;&amp; callBack.call(curEle);
+</div><div class="hljs-line"><span class="hljs-comment line-number">286.</span>                <span class="hljs-keyword">return</span>;
+</div><div class="hljs-line"><span class="hljs-comment line-number">287.</span>            }
+</div><div class="hljs-line"><span class="hljs-comment line-number">288.</span>            <span class="hljs-keyword">var</span> curPos = {};
+</div><div class="hljs-line"><span class="hljs-comment line-number">289.</span>            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> key <span class="hljs-keyword">in</span> target) {
+</div><div class="hljs-line"><span class="hljs-comment line-number">290.</span>                <span class="hljs-keyword">if</span> (target.hasOwnProperty(key)) {
+</div><div class="hljs-line"><span class="hljs-comment line-number">291.</span>                    curPos[key] = effect(time, begin[key], change[key], duration);
+</div><div class="hljs-line"><span class="hljs-comment line-number">292.</span>                }
+</div><div class="hljs-line"><span class="hljs-comment line-number">293.</span>            }
+</div><div class="hljs-line"><span class="hljs-comment line-number">294.</span>            utils.css(curEle, curPos);
+</div><div class="hljs-line"><span class="hljs-comment line-number">295.</span>        }, <span class="hljs-number">17</span>);
+</div><div class="hljs-line"><span class="hljs-comment line-number">296.</span>    }
+</div><div class="hljs-line"><span class="hljs-comment line-number">297.</span>
+</div><div class="hljs-line"><span class="hljs-comment line-number">298.</span>    <span class="hljs-comment">/*
+</span></div><div class="hljs-line"><span class="hljs-comment line-number">299.</span>     * 参数使用OPTIONS对象处理的好处:
+</div><div class="hljs-line"><span class="hljs-comment line-number">300.</span>     *  1、不用考虑顺序的问题了，只要传递的时候在对象中指定好内容即可，也就是哪一个属性传递哪一个值即可
+</div><div class="hljs-line"><span class="hljs-comment line-number">301.</span>     *  2、对于不传递的我们完全可以在函数中给做一些默认值，把传递的值覆盖默认的，没传递的使用默认值即可
+</div><div class="hljs-line"><span class="hljs-comment line-number">302.</span>     *  =&gt;当我们封装的方法需要支持传递很多参数，并且有些可以传递也可以不传递（不传递的都给默认值），再并且后期可能还会扩展更多的参数传递，这些情况下，兄弟就不要多想了，直接上OPTIONS
+</div><div class="hljs-line"><span class="hljs-comment line-number">303.</span>     */
+</div><div class="hljs-line"><span class="hljs-comment line-number">304.</span>}();
 </div></code></pre></div></body></html>
