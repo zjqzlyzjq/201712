@@ -59,6 +59,10 @@
 
     /*
      * 运动公式:支持匀速和非匀速
+     *  t：time当前运动的时间
+     *  b：begin当前方向的起始位置
+     *  c：change当前方向的距离
+     *  d：duration当前运动的总时间
      */
     var animationEffect = {
         Linear: function (t, b, c, d) {
