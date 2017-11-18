@@ -92,6 +92,7 @@ var bannerRender = (function () {
 
     //=>轮播图公共切换方法
     function change() {
+        if (step === prevStep) return;
         var curSlide = wrapperList[step],
             preSlide = wrapperList[prevStep];
 
