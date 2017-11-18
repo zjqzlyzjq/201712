@@ -31,8 +31,12 @@ var dialogRender = (function () {
                     marginTop: -250,
                     marginLeft: -200
                 },
-                duration: 200,
-                effect: animateEffect.Bounce.easeOut
+                duration: 2000,
+                effect: animateEffect.Bounce.easeOut,
+                callBack: function () {
+                    //=>this:dialogBox
+                    //utils.css(this, 'backgroundColor', 'lightcoral');
+                }
             });
 
             //=>控制隐藏

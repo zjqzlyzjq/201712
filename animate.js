@@ -281,7 +281,6 @@
                 utils.css(curEle, target);
                 clearInterval(curEle.animateTimer);
                 //=>run callBack
-                //typeof callBack === 'function' ? callBack.call(curEle) : null;
                 callBack && callBack.call(curEle);
                 return;
             }
@@ -294,11 +293,4 @@
             utils.css(curEle, curPos);
         }, 17);
     }
-
-    /*
-     * 参数使用OPTIONS对象处理的好处:
-     *  1、不用考虑顺序的问题了，只要传递的时候在对象中指定好内容即可，也就是哪一个属性传递哪一个值即可
-     *  2、对于不传递的我们完全可以在函数中给做一些默认值，把传递的值覆盖默认的，没传递的使用默认值即可
-     *  =>当我们封装的方法需要支持传递很多参数，并且有些可以传递也可以不传递（不传递的都给默认值），再并且后期可能还会扩展更多的参数传递，这些情况下，兄弟就不要多想了，直接上OPTIONS
-     */
 }();
