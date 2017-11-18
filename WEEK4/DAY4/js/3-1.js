@@ -19,7 +19,7 @@ var dialogRender = (function () {
     function moveDialog() {
         //=>准备数据:T/B/C/D
         var time = 0,
-            duration = 200;
+            duration = 1000;
         var begin = {},
             change = {},
             target = {
@@ -46,11 +46,24 @@ var dialogRender = (function () {
             var curPos = {};
             for (var key in target) {
                 if (target.hasOwnProperty(key)) {
-                    curPos[key] = time / duration * change[key] + begin[key];
+                    //curPos[key] = time / duration * change[key] + begin[key];
+                    curPos[key] = easeOut(time, begin[key], change[key], duration);
                 }
             }
             utils.css(dialogBox, curPos);
         }, 17);
+    }
+
+    function easeOut(t, b, c, d) {
+        if ((t /= d) < (1 / 2.75)) {
+            return c * (7.5625 * t * t) + b;
+        } else if (t < (2 / 2.75)) {
+            return c * (7.5625 * (t -= (1.5 / 2.75)) * t + .75) + b;
+        } else if (t < (2.5 / 2.75)) {
+            return c * (7.5625 * (t -= (2.25 / 2.75)) * t + .9375) + b;
+        } else {
+            return c * (7.5625 * (t -= (2.625 / 2.75)) * t + .984375) + b;
+        }
     }
 
     return {
