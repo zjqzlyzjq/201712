@@ -250,3 +250,100 @@ $.ajax()：帮助我们发送ajax请求
 
 ...
 ```
+
+`筛选方法`
+> filter：同级过滤
+> children：子集过滤
+> find：后代过滤
+```javascript
+var $links=$('a');
+$links.filter('.bg'); //=>首先获取所有的A，在所有的A中把具备样式类为bg的获取到（二次筛选）
+
+$('#box').children('a'); //=>首先获取#box所有的子元素，在所有子元素中筛选出标签名为a的元素集合 <=> $('#box>a')
+
+$('#box').find('.bg'); //=>首先获取#box后代中所有的元素，在所有的元素中筛选出样式类名中具备bg的元素集合 <=> $('#box .bg')
+
+//prev：获取上一个哥哥  $('#box').prev('a')
+//prevAll：所有的哥哥
+//next：下一个弟弟
+//nextAll：所有的弟弟
+//siblings：所有的兄弟
+//parent：父亲元素
+//parents：所有的祖先元素（一直到html为止）
+...
+```
+
+`each`
+> JQ中的each有三种
+> 1、写在原型上的each：遍历JQ对象中的每一项
+> 2、写在对象上的each：工具方法，可以用来遍历数组、类数组、对象等
+> 3、内置的each其实也是调用原型上的each处理的，只不过JQ在处理的时候会内部自己调用
+```javascript
+//=>内置EACH
+$('a').addClass('select'); //=>我们获取的A可能有很多个，执行一次addClass，相当于给每个获取的A都增加了一个叫做select的样式类（JQ中大部分方法在执行的时候，都会把获取的JQ集合中的每一项调用each进行遍历，把需要操作的任务对每一个遍历的元素进行操作）
+
+$('a').css('width'); //=>获取的时候只返回第一个元素的样式（设置走内置EACH批量处理，获取只处理第一个）
+
+//=>原型上的EACH
+$('a').each(function(index,item){
+	//=>传递参数的顺序和数组内置的forEach顺序相反：ary.forEach(function(item,index){...});
+    //=>获取的A有多少个，回调函数被触发执行多少次：index当前遍历这一项的索引 item是当前遍历这一项的内容
+    //=>this -> item (原生JS对象) 方法中的this是当前遍历的这一项
+    //=>$(this) 也是当前遍历这一项，但是属于JQ对象
+});
+
+//=>JQ对象上提供的工具方法：each
+$.each([数组/类数组], function(index,item) {
+	//=>this:item
+});
+$.each([对象],function(key,value){
+	//=>this:value
+	//=>JQ也是采用for in循环用来遍历对象的，这样的话就存在可能把公有属性和方法遍历到的问题
+	if([对象].hasOwnProperty(key)){
+		
+	}
+});
+```
+
+`extend`
+> \$.extend()：把方法扩展到JQ对象上，这个操作一般是用来完善类库的
+> $.fn.extend()：把方法扩展到JQ的原型上，供JQ的实例（DOM集合）使用，这个操作一般是用来写JQ插件的
+```javascript
+//=>扩展工具方法，用来完善类库
+$.extend({
+	aa:function(){}
+});
+$.aa();
+
+//=>扩展到原型上供实例调用的
+$.fn.extend({
+	bb:function(){
+		//=>this:操作当前这个方法的JQ实例（JQ对像），此处不需要再$(this)转换为JQ对像
+	}
+});
+$('xxx').bb();
+```
+
+`animate`
+> JQ中提供了元素运动的动画库
+> stop：结束当前元素正在运行的动画，继续执行下一个新动画（一般我们实现动画,stop方法基本上必然执行）
+> finish：和stop类似，finish需要让元素立即运动到上一个动画的目标位置，从目标位置执行下一个动画，而stop是从上一个动画停止的位置执行下一个动画
+> 
+> animate([target],[duration],[effect],[callBack])：
+> [target] 对象
+> [duration] MS
+> [effect]  linear、ease、ease-in、ease-out、ease-in-out
+> [callBack] 回调函数，动画结束做的事情
+>  
+> show(1000/'fast'/'slow')   
+> hide  
+> toggle
+>  
+> fadeIn
+> fadeOut
+> fadeToggle
+>  
+> slideUp
+> slideDown
+> slideToggle
+> ...
