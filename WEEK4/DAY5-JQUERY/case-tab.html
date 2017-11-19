@@ -107,5 +107,26 @@
 
 <!--IMPORT JS-->
 <script src="js/jquery-1.11.3.min.js"></script>
+<script src="js/pluginTab.min.js"></script>
+<script>
+    $('.tabBox').each(function (index) {
+        if (index === 0) {
+            $(this).pluginTab();
+        }
+
+        if (index === 1) {
+            $(this).pluginTab({
+                initIndex: 1
+            });
+        }
+
+        if (index === 2) {
+            $(this).pluginTab({
+                initIndex: 2,
+                eventType: 'mouseover'
+            });
+        }
+    });
+</script>
 </body>
 </html>
