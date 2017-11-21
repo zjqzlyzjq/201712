@@ -1,4 +1,4 @@
-~function () {
+~function (options) {
     var container = document.getElementById('container'),
         containerChild = utils.children(container),
         wrapper = containerChild[0],
@@ -8,7 +8,20 @@
     var slideList = null,
         imgList = null,
         focusList = null,
-        bannerData = null;
+        bannerData = null,
+        containerWidth = container.clientWidth;
+
+    //=>INIT PARAMETERS
+    var _default = {
+        initIndex: 0
+    };
+    for (var key in options) {
+        if (options.hasOwnProperty(key)) {
+            _default[key] = options[key];
+        }
+    }
+    var initIndex = _default.initIndex;
+
 
     //=>GET DATA & BIND DATA
     ~function () {
@@ -29,7 +42,7 @@
             var item = bannerData[i];
             str += `<li class="slide">
                 <a href="${item.link}">
-                    <img src="${item.img}" alt="${item.desc}">
+                    <img src="" data-img="${item.img}" alt="${item.desc}">
                 </a>
             </li>`;
 
@@ -44,8 +57,41 @@
         focusList = focusBox.getElementsByTagName('li');
 
         //->COMPUTED WRAPPER WIDTH
-        utils.css(wrapper, 'width', bannerData.length * container.offsetWidth);
+        utils.css(wrapper, 'width', bannerData.length * containerWidth);
     }();
 
-    
+    //=>INIT SHOW & LAZY IMG
+    ~function () {
+        //->FOCUS DEFAULT SHOW
+        for (var i = 0; i < focusList.length; i++) {
+            focusList[i].className = i === initIndex ? 'select' : null;
+        }
+
+        //->WRAPPER DEFAULT SHOW
+        utils.css(wrapper, 'left', -containerWidth * initIndex);
+
+        //->LAZY IMG
+        var timer = setTimeout(function () {
+            for (var k = 0; k < imgList.length; k++) {
+                lazyImg(imgList[k]);
+            }
+            clearTimeout(timer);
+        }, 500);
+
+        function lazyImg(curImg) {
+            var tempImg = new Image;
+            tempImg.onload = function () {
+                curImg.src = this.src;
+                curImg.style.display = 'block';
+                animate({
+                    curEle: curImg,
+                    target: {opacity: 1},
+                    duration: 200
+                });
+                tempImg = null;
+            };
+            tempImg.src = curImg.getAttribute('data-img');
+        }
+    }();
+
 }();
