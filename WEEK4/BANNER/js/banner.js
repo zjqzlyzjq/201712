@@ -107,11 +107,57 @@
             utils.css(wrapper, 'left', 0);
             initIndex = 1;
         }
+        change();
+    }
+
+    //=>MOUSE EVENT
+    container.onmouseenter = function () {
+        clearInterval(autoTimer);
+        arrowLeft.style.display = arrowRight.style.display = 'block';
+    };
+    container.onmouseleave = function () {
+        autoTimer = setInterval(autoMove, autoInterval);
+        arrowLeft.style.display = arrowRight.style.display = 'none';
+    };
+
+    //=>BIND FOCUS EVENT
+    ~function () {
+        for (var i = 0; i < focusList.length; i++) {
+            focusList[i].myIndex = i;
+            focusList[i].onclick = function () {
+                initIndex = this.myIndex;
+                change();
+            }
+        }
+    }();
+
+    //=>BIND ARROW EVENT
+    ~function () {
+        arrowRight.onclick = autoMove;
+        arrowLeft.onclick = function () {
+            initIndex--;
+            if (initIndex === -1) {
+                //->RUN TO CLONE ELEMENT
+                utils.css(wrapper, 'left', -bannerData.length * containerWidth);
+                initIndex = bannerData.length - 1;
+            }
+            change();
+        }
+    }();
+
+    //=>CHANGE
+    function change() {
         animate({
             curEle: wrapper,
             target: {left: -initIndex * containerWidth},
             duration: 300
         });
-    }
 
+        //->CHANGE FOCUS
+        var tempIndex = initIndex;
+        tempIndex === bannerData.length ? tempIndex = 0 : null;
+        for (var i = 0; i < focusList.length; i++) {
+            focusList[i].className = i === tempIndex ? 'select' : null;
+        }
+    }
 }();
