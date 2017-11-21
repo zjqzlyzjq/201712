@@ -13,15 +13,16 @@
 
     //=>INIT PARAMETERS
     var _default = {
-        initIndex: 0
+        initIndex: 0,
+        autoInterval: 2000
     };
     for (var key in options) {
         if (options.hasOwnProperty(key)) {
             _default[key] = options[key];
         }
     }
-    var initIndex = _default.initIndex;
-
+    var initIndex = _default.initIndex,
+        autoInterval = _default.autoInterval;
 
     //=>GET DATA & BIND DATA
     ~function () {
@@ -56,8 +57,11 @@
         imgList = wrapper.getElementsByTagName('img');
         focusList = focusBox.getElementsByTagName('li');
 
+        //=>CLONE
+        wrapper.appendChild(slideList[0].cloneNode(true));
+
         //->COMPUTED WRAPPER WIDTH
-        utils.css(wrapper, 'width', bannerData.length * containerWidth);
+        utils.css(wrapper, 'width', (bannerData.length + 1) * containerWidth);
     }();
 
     //=>INIT SHOW & LAZY IMG
@@ -93,5 +97,21 @@
             tempImg.src = curImg.getAttribute('data-img');
         }
     }();
+
+    //=>AUTO CHANGE
+    var autoTimer = null;
+    autoTimer = setInterval(autoMove, autoInterval);
+    function autoMove() {
+        initIndex++;
+        if (initIndex === bannerData.length + 1) {
+            utils.css(wrapper, 'left', 0);
+            initIndex = 1;
+        }
+        animate({
+            curEle: wrapper,
+            target: {left: -initIndex * containerWidth},
+            duration: 300
+        });
+    }
 
 }();
