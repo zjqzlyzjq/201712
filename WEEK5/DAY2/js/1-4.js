@@ -39,6 +39,6 @@
     window.$each = each;
 }();
 
-$each(12, function (item, index) {
+$each({name: '珠峰培训', age: 12, 0: 13}, function (item, index) {
     console.log(item, index);
 });
