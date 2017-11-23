@@ -60,9 +60,9 @@
 //
 // let fn = (i)=> (n)=> n + (++i);
 
-var obj = {
-    fn: function fn() {
-        console.log(undefined);
-    }
-};
-obj.call(12);
+// let obj = {
+//     fn: ()=> {
+//         console.log(this);
+//     }
+// };
+// obj.call(12);
